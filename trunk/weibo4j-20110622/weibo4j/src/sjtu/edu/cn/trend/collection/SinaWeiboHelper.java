@@ -192,7 +192,7 @@ public class SinaWeiboHelper extends MySQLDatabaseHelperDynamic {
 			int month = calendar.get(Calendar.MONTH) + 1;
 			int day = calendar.get(Calendar.DAY_OF_MONTH) - days;
 			String date = "'" + year + "-" + month + "-" + day + "'";
-			String sqlQuery = "select trendName from " + keywordTable + " where createTime <= " + date ;
+			String sqlQuery = "select trendName from " + keywordTable + " where createTime <= " + date  + " and alive = 1";
 			System.out.println(sqlQuery);
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(sqlQuery);

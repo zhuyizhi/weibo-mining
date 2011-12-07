@@ -185,6 +185,26 @@ public class SinaWeiboHelper extends MySQLDatabaseHelperDynamic {
 		}
 	}
 	
+	public void invalidKeywordsLessThan(int days, int threshold){
+		List<String> strList = new ArrayList<String>();
+		try{
+			checkConnection();
+			Calendar now = Calendar.getInstance();
+			
+			String date = "'" + year + "-" + month + "-" + day + "'";
+			String sql = "update " + keywordTable + " set alive = 0 where createTime < " + date;
+			
+			System.out.println(sql);
+			
+			Statement st = con.createStatement();
+			st.executeUpdate(sql);
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			super.closeConnection();
+		}
+	}
+	
 	public void createTrendTable(String tableName){
 		checkConnection();
 		try{

@@ -6,6 +6,7 @@ import java.util.List;
 public class KeywordControllerV2 {
 	private static final String keywordTable = "话题词表";
 	private SinaWeiboHelper helper = new SinaWeiboHelper();
+	private int NUMBER_AFTER_TWO_DAY = 1000;
 	/**
 	 * 将keyword填入"话题词表"，这样在下次爬行的时候就会爬取这个词了
 	 * @param keyword
@@ -37,6 +38,10 @@ public class KeywordControllerV2 {
 		Calendar c = Calendar.getInstance();
 		c.set(c.DAY_OF_MONTH, c.get(c.DAY_OF_MONTH) - 7);
 		helper.invalidKeywordsBefore(c);
+		
+		//get unqualified table invalid
+		
+		
 	}
 	
 	public void scheduler(){

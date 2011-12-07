@@ -29,7 +29,7 @@ public class WeiboCollectControllerV2 {
 							helper.insertTrendRelatedWeiboV2(keyword, st);
 						}
 						
-						Thread.sleep(2000);
+						Thread.sleep(1000);
 					}
 				}catch(Exception e){
 					e.printStackTrace();
@@ -37,7 +37,7 @@ public class WeiboCollectControllerV2 {
 				}
 				
 				System.out.println("exceptionNumber = " + exceptionNumber);
-				Thread.sleep(60000);
+				Thread.sleep(20000);
 			}
 		}catch(Exception e){
 			e.printStackTrace();

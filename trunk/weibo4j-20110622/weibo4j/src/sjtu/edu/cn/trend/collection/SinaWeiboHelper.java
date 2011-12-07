@@ -165,7 +165,6 @@ public class SinaWeiboHelper extends MySQLDatabaseHelperDynamic {
 	}
 	
 	public void invalidKeywordsBefore(Calendar calendar){
-		List<String> strList = new ArrayList<String>();
 		try{
 			checkConnection();
 			int year = calendar.get(Calendar.YEAR);
@@ -186,7 +185,6 @@ public class SinaWeiboHelper extends MySQLDatabaseHelperDynamic {
 	}
 	
 	public void invalidKeywordsLessThan(int days, int threshold){
-		List<String> strList = new ArrayList<String>();
 		try{
 			checkConnection();
 			Calendar calendar = Calendar.getInstance();
@@ -194,32 +192,41 @@ public class SinaWeiboHelper extends MySQLDatabaseHelperDynamic {
 			int month = calendar.get(Calendar.MONTH) + 1;
 			int day = calendar.get(Calendar.DAY_OF_MONTH) - days;
 			String date = "'" + year + "-" + month + "-" + day + "'";
-			String sqlQuery = "select trendName from " + keywrodTable + "where createTime < " + date + "and alive = 1";
+			String sqlQuery = "select trendName from " + keywordTable + " where createTime <= " + date ;
+			System.out.println(sqlQuery);
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(sqlQuery);
 			String tempKey;
-			while(rs.next() != null){
-				tempKey = rs.getString("Name");
-				Statement st2 = con.createStatement();
-				String sqlGetCount = "select count(*) as counter from " + tempKey;
-				ResultSet rs2 = st2.executeQuery(sqlGetCount);
-				if(rs2.next()){
-					int counter = rs2.getInt("counter");
-					if(counter < threshold){
-						String sqlUpdate = "update " + keywordTable + " set alive = 0 where trendName = " + date;
-						Statement st3 = con.createStatement();
-						st3.executeUpdate(sqlUpdate);
-						st3.close();
+			while(rs.next()){
+				try{
+					tempKey = rs.getString("trendName");
+					Statement st2 = con.createStatement();
+					String sqlGetCount = "select count(*) as counter from " + tempKey;
+					System.out.println(sqlGetCount);
+					ResultSet rs2 = st2.executeQuery(sqlGetCount);
+					if(rs2.next()){
+						int counter = rs2.getInt("counter");
+						System.out.println(counter);
+						if(counter < threshold){
+							String sqlUpdate = "update " + keywordTable + " set alive = 0 where trendName = '" + tempKey + "'";
+							System.out.println(sqlUpdate);
+							Statement st3 = con.createStatement();
+							st3.executeUpdate(sqlUpdate);
+							st3.close();
+							
+							Statement st4 = con.createStatement();
+							String sqlDrop = "drop table " + tempKey+ "";
+							st4.executeUpdate(sqlDrop);
+							st4.close();
+						}
 					}
+					st2.close();
+				}catch(Exception e){
+					
 				}
-				st2.close();
 			}
-//			String sql = "update " + keywordTable + " set alive = 0 where createTime < " + date;
+			st.close();
 			
-//			System.out.println(sql);
-			
-			
-//			st.executeUpdate(sql);
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{

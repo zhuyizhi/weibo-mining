@@ -605,7 +605,7 @@ public class SinaWeiboHelper extends MySQLDatabaseHelperDynamic {
 //		helper.createTrendTable("李阳");
 //		helper.getExistTableName();
 //		helper.createTrendTable("lishuangjiang");
-		helper.createTrendTableV2("NBA停摆结束");
+		helper.createTrendTableV2("nice_one");
 	}
 }
 

@@ -43,7 +43,12 @@ public class PrepareForGeneration {
 		}
 		return null;
 	}
-	
+	/**
+	 * for every sentiment words, write its surroundings with window size 5
+	 * to the result file
+	 * @param tableName
+	 * @param resultFile
+	 */
 	public void getSubjectiveWindows(String tableName, String resultFile){
 		try{
 			SinaWeiboHelper helper = new SinaWeiboHelper();

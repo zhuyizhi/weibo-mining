@@ -189,15 +189,37 @@ public class SinaWeiboHelper extends MySQLDatabaseHelperDynamic {
 		List<String> strList = new ArrayList<String>();
 		try{
 			checkConnection();
-			Calendar now = Calendar.getInstance();
-			
+			Calendar calendar = Calendar.getInstance();
+			int year = calendar.get(Calendar.YEAR);
+			int month = calendar.get(Calendar.MONTH) + 1;
+			int day = calendar.get(Calendar.DAY_OF_MONTH) - days;
 			String date = "'" + year + "-" + month + "-" + day + "'";
-			String sql = "update " + keywordTable + " set alive = 0 where createTime < " + date;
-			
-			System.out.println(sql);
-			
+			String sqlQuery = "select trendName from " + keywrodTable + "where createTime < " + date + "and alive = 1";
 			Statement st = con.createStatement();
-			st.executeUpdate(sql);
+			ResultSet rs = st.executeQuery(sqlQuery);
+			String tempKey;
+			while(rs.next() != null){
+				tempKey = rs.getString("Name");
+				Statement st2 = con.createStatement();
+				String sqlGetCount = "select count(*) as counter from " + tempKey;
+				ResultSet rs2 = st2.executeQuery(sqlGetCount);
+				if(rs2.next()){
+					int counter = rs2.getInt("counter");
+					if(counter < threshold){
+						String sqlUpdate = "update " + keywordTable + " set alive = 0 where trendName = " + date;
+						Statement st3 = con.createStatement();
+						st3.executeUpdate(sqlUpdate);
+						st3.close();
+					}
+				}
+				st2.close();
+			}
+//			String sql = "update " + keywordTable + " set alive = 0 where createTime < " + date;
+			
+//			System.out.println(sql);
+			
+			
+//			st.executeUpdate(sql);
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{

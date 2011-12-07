@@ -38,7 +38,7 @@ public class MySQLDatabaseHelperDynamic {
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
 			
-			String connectString = "jdbc:mysql://192.168.1.109:"+port+"/"+DATABASE_NAME+"?user="+user
+			String connectString = "jdbc:mysql://202.120.38.155:"+port+"/"+DATABASE_NAME+"?user="+user
 			+"&password="+password+otherCommand;
 			con = DriverManager.getConnection(connectString);
 			

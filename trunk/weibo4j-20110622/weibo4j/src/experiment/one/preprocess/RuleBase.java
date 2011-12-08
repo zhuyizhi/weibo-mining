@@ -20,7 +20,10 @@ public class RuleBase {
 		"^[转载].+",			
 		"^//.+"	,														//去掉纯转发的
 		"^【.+】$",
-		"\\s*"
+		"\\s*",															//去掉只含空格符的
+		".*包邮.*",														//去掉淘宝信息
+		".*淘宝.*",
+		".*Tmall.*"
 	};
 	
 	public static void ruleBasedProcess(String sourceFile, String destFile){

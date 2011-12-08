@@ -19,6 +19,8 @@ import com.aliasi.spell.EditDistance;
 import com.aliasi.stats.Statistics;
 import com.aliasi.util.Distance;
 
+import experiment.one.lucene.SearchTable;
+
 public class Similarity implements Distance{
 	public HashMap<String, Integer> wordIndexMap;
 	public String path = "E:/programs/weibo4j-20110622/weibo4j" +
@@ -319,6 +321,8 @@ public class Similarity implements Distance{
 			System.out.println(cl.label + "    " + cl.score);
 		}
 	}
+	
+
 	
 	public static void main(String[] args) throws Exception{
 //		String path = "E:/programs/weibo4j-20110622/weibo4j" +

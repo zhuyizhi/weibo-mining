@@ -32,13 +32,10 @@
 	<classpathentry kind="lib" path="E:/Path/commons-httpclient-3.0.1.jar"/>
 	<classpathentry kind="lib" path="E:/Path/mysql-connector-java-5.1.6-bin.jar"/>
 	<classpathentry kind="lib" path="E:/Path/lingpipe-4.0.1.jar"/>
-	<classpathentry kind="lib" path="E:/Path/lucene-core-2.9.4.jar"/>
-	<classpathentry kind="lib" path="E:/Path/lucene-demos-2.9.4.jar"/>
-	<classpathentry kind="lib" path="E:/Path/lucene-smartcn-2.9.4.jar"/>
-	<classpathentry kind="lib" path="E:/Path/lucene-smartcn-2.9.4-javadoc.jar"/>
 	<classpathentry kind="src" path="Lucene"/>
 	<classpathentry kind="lib" path="E:/Path/sqljdbc4.jar"/>
 	<classpathentry kind="lib" path="E:/Path/args4j-2.0.6.jar"/>
 	<classpathentry kind="lib" path="E:/Path/tmt-0.3.3.jar"/>
+	<classpathentry kind="lib" path="E:/Path/lucene-core-3.1.0.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

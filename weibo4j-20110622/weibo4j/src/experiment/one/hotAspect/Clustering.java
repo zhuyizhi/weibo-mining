@@ -56,7 +56,8 @@ public class Clustering {
 			String path = 
 				"E:/programs/weibo4j-20110622/weibo4j/experiment/real_one/hotAspect/00200/";
 //			Similarity sim = new Similarity("term-index_UTF-8.txt", "topic-term-distributions.csv",path);
-			Similarity sim = new Similarity();
+//			Similarity sim = new Similarity();
+			PMISimilarity sim = new PMISimilarity();
 			CompleteLinkClusterer cl = new CompleteLinkClusterer(sim);
 			Dendrogram<String> dend = cl.hierarchicalCluster(strSet);
 			Set<Set<String>> clusters = dend.partitionK(13);
@@ -69,7 +70,7 @@ public class Clustering {
 				}
 				System.out.println();
 			}
-//			System.out.println(dend.prettyPrint());
+			System.out.println(dend.prettyPrint());
 		}catch(Exception e){
 			e.printStackTrace();
 		}

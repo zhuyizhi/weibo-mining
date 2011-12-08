@@ -98,6 +98,16 @@ public class WeiboV1 {
 	public static String filterAt(String str){
 		return str.replaceAll("@\\S+", "");
 	}
+	/**
+	 * act on a single token
+	 * @param token
+	 * @return
+	 */
+	public static String filterPOS(String token){
+		if(token.indexOf("/") != -1)
+			token = token.substring(0, token.indexOf("/"));
+		return token;
+	}
 	
 	public static List<String> getStopWordList(){
 		List<String> stopWordList = new ArrayList<String>();
@@ -117,6 +127,20 @@ public class WeiboV1 {
 		HashSet<String> stopWordSet = new HashSet<String>();
 		try{
 			BufferedReader br = new BufferedReader(new FileReader(new File("stopwords.txt")));
+			String word;
+			while((word = br.readLine()) != null){
+				stopWordSet.add(word);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return stopWordSet;
+	}
+	
+	public static HashSet<String> getStopWordSet(String filePath){
+		HashSet<String> stopWordSet = new HashSet<String>();
+		try{
+			BufferedReader br = new BufferedReader(new FileReader(new File(filePath)));
 			String word;
 			while((word = br.readLine()) != null){
 				stopWordSet.add(word);

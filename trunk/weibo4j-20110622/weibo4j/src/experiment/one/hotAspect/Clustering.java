@@ -1,5 +1,6 @@
 package experiment.one.hotAspect;
 
+import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.PriorityQueue;
 import java.util.Set;
@@ -9,6 +10,7 @@ import november.second.LabelScorePair;
 import com.aliasi.cluster.CompleteLinkClusterer;
 import com.aliasi.cluster.Dendrogram;
 import com.aliasi.cluster.SingleLinkClusterer;
+import com.aliasi.util.Distance;
 
 public class Clustering {
 	public static void singleLinkClustering(Set<String> strSet){
@@ -75,6 +77,58 @@ public class Clustering {
 			e.printStackTrace();
 		}
 	}
+
+	public static Set<Set<String>> completeLinkClustering(Set<String> strSet, Distance sim, int k){
+		try{
+			CompleteLinkClusterer cl = new CompleteLinkClusterer(sim);
+			Dendrogram<String> dend = cl.hierarchicalCluster(strSet);
+			Set<Set<String>> clusters = dend.partitionK(k);
+			printCluster(clusters);
+			return clusters;
+//			System.out.println(dend.prettyPrint());
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static Set<Set<String>> completeLinkClustering(Set<String> strSet, Similarity sim, int k){
+		try{
+			CompleteLinkClusterer cl = new CompleteLinkClusterer(sim);
+			Dendrogram<String> dend = cl.hierarchicalCluster(strSet);
+			Set<Set<String>> clusters = dend.partitionK(k);
+			printCluster(clusters);
+			return clusters;
+//			System.out.println(dend.prettyPrint());
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static void printCluster(Set<Set<String>> clusters){
+//		int counter = 0;
+		for(Set<String> cluster:clusters){
+//			System.out.println("cluster " + (++counter) + ": ");
+//			System.out.print("      ");
+			for(String str:cluster){
+				System.out.print(str + ",");
+			}
+			System.out.println();
+		}
+	}
+	
+	public static void printCluster(Set<Set<String>> clusters, PrintWriter pw) throws Exception{
+//		int counter = 0;
+		for(Set<String> cluster:clusters){
+//			System.out.println("cluster " + (++counter) + ": ");
+//			System.out.print("      ");
+			for(String str:cluster){
+				pw.print(str + ",");
+			}
+			pw.println();
+		}
+	}
 	
 	public static void testCLC() throws Exception{
 		FrequentNoun fn = new FrequentNoun();
@@ -85,7 +139,7 @@ public class Clustering {
 		HashSet<String> sets = new HashSet<String>();
 		LabelScorePair cl;
 		while((cl = pq.poll()) != null){
-			if(cl.score < 1000)
+			if(cl.score < 500)
 				break;
 			
 			sets.add(cl.label);

@@ -20,6 +20,7 @@ import com.aliasi.stats.Statistics;
 import com.aliasi.util.Distance;
 
 import experiment.one.lucene.SearchTable;
+import experiment.util.Stat;
 
 public class Similarity implements Distance{
 	public HashMap<String, Integer> wordIndexMap;
@@ -28,7 +29,7 @@ public class Similarity implements Distance{
 	public String ttFile = "topic-term-distributions.csv";
 	public String termIndexFile = "term-index.txt";
 	public Double[][] ttMatrix;
-	public static int topicNumber = 10;
+	public int topicNumber = 10;
 //	public static double smoothParameter = 0.1;
 	public double topicParameter = 0.5;
 	public double semanticParameter = 0.4;
@@ -37,18 +38,19 @@ public class Similarity implements Distance{
 	public WordSimilarity wsi;
 
 	
-	public Similarity(String path){
-		this("term-index.txt", "topic-term-distributions.csv", path);
+	public Similarity(String path, int topicNumber){
+		this("term-index.txt", "topic-term-distributions.csv", path, topicNumber);
 	}
 	
-	public Similarity(String termIndexFile, String ttFile, String path){
+	public Similarity(String termIndexFile, String ttFile, String path, int topicNumber){
 		this.ttFile = ttFile;
 		this.termIndexFile = termIndexFile;
 		this.path = path;
+		this.topicNumber = topicNumber;
 		try{
 			BufferedReader br = new BufferedReader(
 					new InputStreamReader(new FileInputStream(path + termIndexFile), 
-							"UTF-8"));
+							"GBK"));
 			String tempStr;
 			int counter = 0;
 			this.wordIndexMap = new HashMap<String, Integer>();
@@ -61,7 +63,8 @@ public class Similarity implements Distance{
 //				System.out.println(tempStr);
 			}
 //			hashMap的大小小于实际的token个数。观察发现有超过size的value，即中间有些string值因为散列重合掉了
-			ttMatrix = getTopicTermDsitribution(path + ttFile, 
+//			发现如果使用gb2312读入的时候就会产生这种情况，所以只好将原文本存为utf-8的重新读取
+			ttMatrix = Stat.getTopicTermDsitribution(path + ttFile, 
 					topicNumber, this.wordIndexMap.size());
 			
 			hownet = Hownet.getHownet();
@@ -75,7 +78,7 @@ public class Similarity implements Distance{
 		try{
 			BufferedReader br = new BufferedReader(
 					new InputStreamReader(new FileInputStream(path + termIndexFile), 
-							"gb2312"));
+							"GBK"));
 			String tempStr;
 			int counter = 0;
 			this.wordIndexMap = new HashMap<String, Integer>();
@@ -83,7 +86,7 @@ public class Similarity implements Distance{
 				this.wordIndexMap.put(tempStr, counter++);
 			}
 
-			ttMatrix = getTopicTermDsitribution(path + ttFile, 
+			ttMatrix = Stat.getTopicTermDsitribution(path + ttFile, 
 					topicNumber, this.wordIndexMap.size());
 			
 			hownet = Hownet.getHownet();
@@ -104,7 +107,7 @@ public class Similarity implements Distance{
 		HashMap<String, Integer> wi = new HashMap<String, Integer>();
 		try{
 			BufferedReader br = new BufferedReader(
-					new InputStreamReader(new FileInputStream(termIndexFile), "gb2312"));
+					new InputStreamReader(new FileInputStream(termIndexFile), "GBK"));
 			String tempStr;
 			int counter = 0;
 			while((tempStr = br.readLine()) != null){
@@ -116,49 +119,6 @@ public class Similarity implements Distance{
 		return wi;
 	}
 
-	public static Double[][] getTopicTermDsitribution(String topicTermDistributionFile, 
-			int topicNumber, int termNumber){
-		Double[][] ttMatrix = new Double[topicNumber][termNumber + 1 ];//原来是topicNumber + 1
-		try{
-			BufferedReader br = new BufferedReader(
-					new InputStreamReader(
-							new FileInputStream(topicTermDistributionFile), "gb2312"));
-//			PrintWriter pw = new PrintWriter
-//			(new OutputStreamWriter(new FileOutputStream(path + "test.txt"), "UTF-8"));
-			
-			String tempStr;
-			int col = 0;
-			while((tempStr = br.readLine()) != null){
-				Integer size = 0;
-				String[] strArr = tempStr.split(",");
-//				System.out.println(strArr.length);
-				for(int i = 0; i < strArr.length; i++){
-					Integer val = Integer.parseInt(strArr[i]);
-					size += val;
-					ttMatrix[col][i] = val.doubleValue();
-//					System.out.println("i:col " + i + ":" + col);
-				}
-				ttMatrix[col][strArr.length] = size.doubleValue();
-				col++;
-				if(col >= topicNumber)
-					break;
-			}
-			
-//			for(Double[] da:ttMatrix){
-//				for(Double d:da){
-//					System.out.println(d);
-//					pw.print(d + " ");
-//				}
-//				pw.println();
-//			}
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-
-		return ttMatrix;
-	}
-
-	
 	public double getTopicalDivergence(String word1, String word2){
 		double simi = 0;
 //		System.out.println(word1 + "::::" + word2);
@@ -188,7 +148,7 @@ public class Similarity implements Distance{
 //			for(int i = 0; i < d1.length; i++){
 //				System.out.println(d1[i] + "  " + d2[i]);
 //			}
-			simi = Statistics.jsDivergence(d1, d2);//有问题啊啊啊啊
+			simi = Statistics.jsDivergence(d1, d2);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -278,11 +238,16 @@ public class Similarity implements Distance{
 		double sSimi = this.getSemanticDistance(word1, word2);
 		double strSimi = getStringDistance(word1, word2);
 		
+		double simi = 1;
 		if(sSimi == 0.99){
-			return tSimi * (topicParameter + semanticParameter * 0.8) 
-			+ strSimi * (stringParameter + semanticParameter * 0.2); 
+			simi = tSimi * (topicParameter + semanticParameter * 0.8) 
+			+ strSimi * (stringParameter + semanticParameter * 0.2);
+			System.out.println(word1 + ":" + word2 + " = " + simi);
+			return simi; 
 		}else{
-			return tSimi * topicParameter + sSimi * semanticParameter + strSimi * stringParameter; 
+			simi =  tSimi * topicParameter + sSimi * semanticParameter + strSimi * stringParameter; 
+			System.out.println(word1 + ":" + word2 + " = " + simi);
+			return simi;
 		}
 	}
 	
@@ -339,7 +304,7 @@ public class Similarity implements Distance{
 		
 		String path = 
 			"E:/programs/weibo4j-20110622/weibo4j/experiment/real_one/hotAspect/00200/";
-		Similarity sim = new Similarity("term-index_UTF-8.txt", "topic-term-distributions.csv",path);
+		Similarity sim = new Similarity("term-index_UTF-8.txt", "topic-term-distributions.csv",path, 10);
 	}
 
 	@Override

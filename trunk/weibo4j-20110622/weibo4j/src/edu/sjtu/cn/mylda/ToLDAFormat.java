@@ -8,10 +8,10 @@ import java.util.List;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.ScoreDoc;
 
-import sjtu.edu.cn.weibo.weibotools.WeiboV1;
 
 import edu.sjtu.ltlab.word.split.ICTCSplit;
 import edu.sjtu.ltlab.word.split.IRSplit;
+import experiment.util.WeiboV1;
 
 
 public class ToLDAFormat {

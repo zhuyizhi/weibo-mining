@@ -11,8 +11,9 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashSet;
 
+import experiment.util.WeiboV1;
+
 import sjtu.edu.cn.trend.collection.SinaWeiboHelper;
-import sjtu.edu.cn.weibo.weibotools.WeiboV1;
 
 public class ForLDATrainning {
 	public static String path = 

@@ -10,8 +10,9 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Set;
 
+import experiment.util.WeiboV1;
+
 import sjtu.edu.cn.trend.collection.SinaWeiboHelper;
-import sjtu.edu.cn.weibo.weibotools.WeiboV1;
 
 import ICTCLAS.I3S.AC.ICTCLAS50;
 

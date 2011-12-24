@@ -37,11 +37,37 @@ public class Lab {
 			System.out.println(false);
 	}
 	
+	public static void code(){
+		String str1 = "責/n";
+		String str2 = "個/n";
+		System.out.println(str1);
+		System.out.println(str2);
+	}
+	
+	public static void countWords(String file) throws Exception {
+		BufferedReader br = new BufferedReader(new 
+				InputStreamReader(new FileInputStream(file), "GBK"));
+		HashSet<String> set = new HashSet<String>();
+		
+		String temp;
+		while((temp = br.readLine()) != null){
+			temp = temp.substring(temp.indexOf(",") + 1, temp.length());
+			String[] tokens = temp.split(" ");
+			for(String token : tokens)
+				set.add(token);
+		}
+		System.out.println(set.size());
+	}
 	
 	public static void main(String[]args) throws Exception{
 //		stopwords();
-		String[] strs = new String[]{"】/wp", "~/ws", "★☆/ws", "s/w", "看看/v"};
-		for(String w:strs)
-			punc(w);
+//		String[] strs = new String[]{"】/wp", "~/ws", "★☆/ws", "s/w", "看看/v"};
+//		for(String w:strs)
+//			punc(w);
+//		code();
+		String path = "F:/programs/from lab/weibo4j-20110622/weibo4j/experiment/" +
+				"real_one/hotAspect/many-experiment/";
+		String file = "roll_aspect_120_10llda.csv";
+		countWords(path + file);
 	}
 }

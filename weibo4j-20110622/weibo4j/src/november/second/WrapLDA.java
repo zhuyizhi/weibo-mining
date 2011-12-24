@@ -6,14 +6,15 @@ import lab.sjtu.LDA;
 import edu.sjtu.cn.mylda.ToLDAFormat;
 
 public class WrapLDA {
-	public static String path = "experiment\\sandBox\\";
+	public static String path = "experiment/real_one/hotAspect/many-experiment/GibbsLDA/";
 //	public static String path = 
 //		"experiment\\november.second\\garbage collection\\";
 	public static void main(String[]args){
 		try{
 //			String fileName = "invisableLDAFile_2.txt";
 //			String tableName = "lishuangjiang";
-			String weiboFile =  "FileForLDA_lishuangjiang.txt";
+//			String weiboFile =  "FileForLDA_lishuangjiang.txt";
+			String weiboFile = "wallstreet_LDA.csv";
 			String testFile = "mytest.txt";
 //			String weiboFile =  "mytest.txt";
 //			String weiboFile = "invisableLDAFile_2.txt";
@@ -37,7 +38,7 @@ public class WrapLDA {
 //			String[] arg = new String[]{"-est", "-dfile", weiboFile, "-alpha", alpha, 
 //					"-ntopics", ntopics, "-niters", niters, "-savestep", savestep, "-twords", twords
 //					, "-dir", dir};
-			String[] arg = new String[]{"-inf", "-dfile", testFile, "-model", "model-final"
+			String[] arg = new String[]{"-inf", "-dfile", weiboFile, "-model", "model-final"
 					, "-dir", dir};
 			//using java reflection to invoke LDA method
 			Method lda = LDA.class.getMethod("main", new Class[]{String[].class});

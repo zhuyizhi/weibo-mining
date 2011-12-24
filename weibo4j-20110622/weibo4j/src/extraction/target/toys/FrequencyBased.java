@@ -21,9 +21,9 @@ import ljc.seg.SegResult;
 import ljc.seg.SegWord;
 
 import sjtu.edu.cn.trend.collection.SinaWeiboHelper;
-import sjtu.edu.cn.weibo.weibotools.WeiboV1;
 
 import edu.sjtu.ltlab.word.split.IRSplit;
+import experiment.util.WeiboV1;
 
 /**
  * 用于frequency-based method 来抽取target方法的实验

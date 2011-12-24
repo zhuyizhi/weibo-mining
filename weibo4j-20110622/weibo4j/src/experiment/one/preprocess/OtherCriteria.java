@@ -1,6 +1,6 @@
 package experiment.one.preprocess;
 
-import sjtu.edu.cn.weibo.weibotools.WeiboV1;
+import experiment.util.WeiboV1;
 
 public class OtherCriteria {
 	public static int MINIMUM_WORD = 3;
@@ -23,6 +23,8 @@ public class OtherCriteria {
 		
 		return false;
 	}
+	
+
 }
 
 //同时含有多于一个流行话题的也去除

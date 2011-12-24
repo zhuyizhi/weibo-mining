@@ -1,7 +1,11 @@
 package cn.edu.sjtu.nlp.hownet;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 
 public class Hownet {
 	private static HashMap hownet = new HashMap();
@@ -66,4 +70,20 @@ public class Hownet {
 
 	}
 
+	public static boolean isPerson(String word){
+		String[] senses = ( (HWord)hownet.get(word) ).getSenses();
+		for(String sense : senses){
+			List<String> s = Arrays.asList(sense.split(","));
+			if(s.contains("human|人"))
+				return true;
+		}
+
+		return false;
+	}
+	
+	public static void main(String[] args){
+//		HashMap hownet = Hownet.getHownet();
+		getHownet();
+		System.out.println((isPerson("汽车")));
+	}
 }

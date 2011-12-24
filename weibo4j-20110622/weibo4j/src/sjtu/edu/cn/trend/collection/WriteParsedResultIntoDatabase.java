@@ -16,8 +16,8 @@ import java.util.HashSet;
 import java.util.Random;
 
 import experiment.one.preprocess.RuleBase;
+import experiment.util.WeiboV1;
 
-import sjtu.edu.cn.weibo.weibotools.WeiboV1;
 import weibo4j.User;
 import weibo4j.Weibo;
 

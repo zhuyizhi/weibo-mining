@@ -11,10 +11,11 @@ import java.sql.Statement;
 import java.util.HashSet;
 import java.util.LinkedList;
 
+import experiment.util.WeiboV1;
+
 import ICTCLAS.I3S.AC.ICTCLAS50;
 
 import sjtu.edu.cn.trend.collection.SinaWeiboHelper;
-import sjtu.edu.cn.weibo.weibotools.WeiboV1;
 
 public class PrepareGarbageFile {
 	public ICTCLAS50 ic50;

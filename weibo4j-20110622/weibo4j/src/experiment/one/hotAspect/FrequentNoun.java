@@ -60,6 +60,13 @@ public class FrequentNoun {
 	}
 	
 	
+	public static boolean isName(String token){
+		if(token.indexOf("/") != -1)
+			if(	token.substring(token.indexOf("/"), token.length()).equals("/nr"))
+				return true;
+		return false;
+	}
+	
 	public void getMostFrequentNouns_FileVersion(String tableName, String destFile){
 		PriorityQueue<LabelScorePair> pq = new PriorityQueue<LabelScorePair>();
 		try{

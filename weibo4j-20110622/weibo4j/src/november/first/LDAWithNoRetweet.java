@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import lab.sjtu.LDA;
 import edu.sjtu.cn.mylda.ToLDAFormat;
 import edu.sjtu.cn.mylda.ToLDAFormat;
-import sjtu.edu.cn.weibo.cluster.FileProcess;
+import sjtu.edu.cn.weibo.weibotools.FileProcess;
 
 /**
  * 删除所有与转发有关的信息做LDA

@@ -232,8 +232,14 @@ public class WordSimilarity {
 //			for(Object s:hownet.keySet()){
 //				System.out.println(s);
 //			}
-			double simi = wsi.getSimilarity("山西", "北京");
-			System.out.println(simi);
+//			double simi = wsi.getSimilarity("山西", "北京");
+		
+			String[] senses1 = ( (HWord)hownet.get("小子") ).getSenses();
+			for(String sense : senses1){
+				System.out.println(sense);
+			}
+			System.out.println(senses1.length);
+//			System.out.println(simi);
 
 	}
 	

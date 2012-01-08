@@ -6,7 +6,8 @@ import java.util.List;
 public class KeywordControllerV2 {
 	private static final String keywordTable = "话题词表";
 	private SinaWeiboHelper helper = new SinaWeiboHelper();
-	private int NUMBER_AFTER_TWO_DAY = 10000;
+	private int NUMBER_AFTER_TWO_DAY = 5000;
+	private int NUMBER_EVERY_DAY = 3000;
 	/**
 	 * 将keyword填入"话题词表"，这样在下次爬行的时候就会爬取这个词了
 	 * @param keyword
@@ -33,6 +34,8 @@ public class KeywordControllerV2 {
 		}
 	}
 	
+	
+	
 	public void deleteProcess(){
 		//start to check out of date trend
 		Calendar c = Calendar.getInstance();
@@ -41,6 +44,7 @@ public class KeywordControllerV2 {
 		System.out.println("start 2");
 		//get unqualified table invalid
 		helper.invalidKeywordsLessThan(2, this.NUMBER_AFTER_TWO_DAY);
+		helper.invalidKeywordsEveryday(this.NUMBER_EVERY_DAY);
 		
 	}
 	
@@ -56,7 +60,7 @@ public class KeywordControllerV2 {
 					System.out.println("error in keyword add&&delete ");
 				}
 				System.out.println("scheduler....");
-				Thread.sleep(3600000);
+				Thread.sleep(7200000);//改为两个小时唤醒一次了
 			}
 		}catch(Exception e){
 			e.printStackTrace();

@@ -184,6 +184,11 @@ public class SinaWeiboHelper extends MySQLDatabaseHelperDynamic {
 		}
 	}
 	
+	/**
+	 * 使创建若干天之后，数目小于threshold的talbe 失效，并删除
+	 * @param days
+	 * @param threshold
+	 */
 	public void invalidKeywordsLessThan(int days, int threshold){
 		try{
 			checkConnection();
@@ -233,6 +238,64 @@ public class SinaWeiboHelper extends MySQLDatabaseHelperDynamic {
 			super.closeConnection();
 		}
 	}
+	
+	
+	public void invalidKeywordsEveryday(int threshold){
+		try{
+			checkConnection();
+			Calendar calendar = Calendar.getInstance();
+			//如果是当天的22或23点的话，进行一次清扫，去除所有的当天创建的条数小于threshold的table
+			if(calendar.get(Calendar.HOUR_OF_DAY) == 23 || calendar.get(Calendar.HOUR_OF_DAY) == 22)
+			{
+				int year = calendar.get(Calendar.YEAR);
+				int month = calendar.get(Calendar.MONTH) + 1;
+				int day = calendar.get(Calendar.DAY_OF_MONTH);
+				String date = "'" + year + "-" + month + "-" + day + "'";
+				String sqlQuery = "select trendName from " + keywordTable + " where createTime = " + date  + " and alive = 1";
+				System.out.println(sqlQuery);
+				Statement st = con.createStatement();
+				ResultSet rs = st.executeQuery(sqlQuery);
+				String tempKey;
+				while(rs.next()){
+					try{
+						tempKey = rs.getString("trendName");
+						Statement st2 = con.createStatement();
+						String sqlGetCount = "select count(*) as counter from " + tempKey;
+						System.out.println(sqlGetCount);
+						ResultSet rs2 = st2.executeQuery(sqlGetCount);
+						if(rs2.next()){
+							int counter = rs2.getInt("counter");
+							System.out.println(counter);
+							if(counter < threshold){
+								String sqlUpdate = "update " + keywordTable + " set alive = 0 where trendName = '" + tempKey + "'";
+								System.out.println(sqlUpdate);
+								Statement st3 = con.createStatement();
+								st3.executeUpdate(sqlUpdate);
+								st3.close();
+								
+								Statement st4 = con.createStatement();
+								String sqlDrop = "drop table " + tempKey+ "";
+								st4.executeUpdate(sqlDrop);
+								st4.close();
+							}
+						}
+						st2.close();
+					}catch(Exception e){
+						
+					}
+				}
+				st.close();
+			}
+			
+
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			super.closeConnection();
+		}
+	}
+	
 	
 	public void createTrendTable(String tableName){
 		checkConnection();
